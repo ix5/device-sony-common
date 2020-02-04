@@ -118,6 +118,11 @@ PRODUCT_PACKAGES += \
     libandroid_net \
     libprotobuf-cpp-full
 
+# IMS/RCS
+PRODUCT_PACKAGES += \
+    PresencePolling \
+    RcsService
+
 # RenderScript
 PRODUCT_PACKAGES += \
     librsjni
