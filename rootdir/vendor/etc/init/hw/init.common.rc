@@ -106,6 +106,19 @@ on post-fs
     wait_for_prop vendor.sys.listeners.registered true
 
 on late-fs
+    # Start services for bootanim
+    start surfaceflinger
+    start bootanim
+    # Until bumped
+    start vendor.hwcomposer-2-1
+    # When finally bumped
+    start vendor.hwcomposer-2-3
+    start vendor.configstore-hal
+    # Legacy
+    start vendor.gralloc-2-0
+    # Graphics v3
+    start vendor.qti.hardware.display.allocator
+
     # Mount RW partitions which need to run fsck
     mount_all /vendor/etc/fstab.${ro.hardware} --late
 
