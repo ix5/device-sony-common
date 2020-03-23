@@ -62,8 +62,8 @@ PRODUCT_PACKAGES += \
 # Location
 PRODUCT_PACKAGES += \
     libloc_api_v02 \
-    libloc_ds_api \
-    libgnsspps
+    libgnsspps \
+    libsynergy_loc_api
 
 # IPA
 PRODUCT_PACKAGES += \
