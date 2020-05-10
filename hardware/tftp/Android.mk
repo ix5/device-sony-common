@@ -4,7 +4,6 @@ ifneq ($(filter sdm660 msm8998 sdm845 sm8150,$(TARGET_BOARD_PLATFORM)),)
 
 include $(SONY_CLEAR_VARS)
 LOCAL_MODULE := tftp_symlinks
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)
 
 target_combinations := \
     /persist/rfs/shared:shared \

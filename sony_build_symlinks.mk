@@ -8,6 +8,10 @@
 ifeq ($(SONY_SYMLINKS),)
     $(warning "No symlinks set!")
 else
+# $TARGET_OUT_FAKE = $(PRODUCT_OUT)/fake_packages
+LOCAL_MODULE_PATH      := $(TARGET_OUT_FAKE)
+LOCAL_MODULE_CLASS     := FAKE
+
 LOCAL_POST_INSTALL_CMD := $(foreach s,$(SONY_SYMLINKS), \
     $(eval p := $(subst :,$(space),$(s))) \
     mkdir -p $(dir $(PRODUCT_OUT)/$(word 2,$(p))); \

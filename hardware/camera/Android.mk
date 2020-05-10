@@ -7,7 +7,6 @@ ifneq ($(filter sdm845 sm8150,$(TARGET_BOARD_PLATFORM)),)
 
 include $(SONY_CLEAR_VARS)
 LOCAL_MODULE := camera_symlinks
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)
 
 library_names := \
     camera \
