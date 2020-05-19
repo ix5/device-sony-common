@@ -1,0 +1,7 @@
+service vendor.init-odm-bindmounts /vendor/bin/init.odm_bindmounts.sh
+    # TODO: is core early enough?
+    class core
+    # TODO: Use ambient capabilities instead of root
+    user root
+    group root
+    oneshot

@@ -1,0 +1,6 @@
+cc_prebuilt_binary {
+    name: "init.odm_bindmounts.sh",
+    srcs: ["vendor/bin/init.odm_bindmounts.sh"],
+    init_rc: ["vendor/etc/init/init.odm_bindmounts.rc"],
+    vendor: true,
+}

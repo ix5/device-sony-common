@@ -26,6 +26,11 @@ COMMON_PATH := device/sony/common
 SONY_CLEAR_VARS := $(COMMON_PATH)/sony_clear_vars.mk
 SONY_BUILD_SYMLINKS := $(COMMON_PATH)/sony_build_symlinks.mk
 
+# Include a helper script to bind-mount certain telephony-related modules from
+# the /odm partition into e.g. /system.
+# Allow custom ROMs like PixelExperience to override this:
+TARGET_USES_ODM_APPS_BINDMOUNT ?= true
+
 DEVICE_PACKAGE_OVERLAYS += $(COMMON_PATH)/overlay
 
 PRODUCT_ENFORCE_RRO_TARGETS := *

@@ -57,8 +57,13 @@ endif
 
 # Common init scripts
 PRODUCT_PACKAGES += \
-    init.qcom.modem.sh \
     init.qcom.adspstart.sh \
     init.qcom.cdspstart.sh \
     init.qcom.ipastart.sh \
+    init.qcom.modem.sh \
     init.qcom.slpistart.sh
+
+ifeq ($(TARGET_USES_ODM_APPS_BINDMOUNT),true)
+PRODUCT_PACKAGES += \
+    init.odm_bindmounts.sh \
+endif
