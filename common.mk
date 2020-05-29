@@ -125,6 +125,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/rootdir/vendor/etc/apns-conf.xml:system/etc/apns-conf.xml
 
+
+# Cheating: Copy recovery manually like on crosshatch
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/rootdir/init.recovery.common.rc:recovery/root/init.recovery.$(PRODUCT_DEVICE).rc \
+
 -include device/sony/customization/customization.mk
 
 $(call inherit-product, device/sony/common/common-init.mk)

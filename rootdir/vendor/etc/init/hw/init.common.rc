@@ -27,8 +27,17 @@ service vendor.charger /charger
 on early-init
     mount debugfs debugfs /sys/kernel/debug
     chmod 0755 /sys/kernel/debug
+    # Mount only fstab.persist
+    mount_all /vendor/etc/fstab.persist --early
+
+# We need vold early for metadata encryption
+# (Well not really for SODP, but let's start vold anyhow)
+on early-fs
+    start vold
 
 on init
+    start logd
+
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
 
@@ -87,13 +96,33 @@ on fs
     # Start HW service manager early
     start hwservicemanager
 
-    mount_all /vendor/etc/fstab.${ro.hardware}
+    mount_all /vendor/etc/fstab.${ro.hardware} --early
 
     # Start DSP services as soon as partitions are mounted
     # ADSP devices
     start vendor.adspstart_sh
     # CDSP devices
     start vendor.cdspstart_sh
+
+    # Might use this later, not needed for now
+    #mkdir /mnt/vendor/persist/data 0700 system system
+    #mkdir /mnt/vendor/persist/display 0770 system graphics
+    #mkdir /mnt/vendor/persist/rfs 0770 root system
+    #mkdir /mnt/vendor/persist/hlos_rfs 0770 root system
+    #chmod 0770 /mnt/vendor/persist/rfs
+    #chmod 0770 /mnt/vendor/persist/rfs/shared
+    #chmod 0770 /mnt/vendor/persist/rfs/msm
+    #chmod 0770 /mnt/vendor/persist/rfs/msm/adsp
+    #chmod 0770 /mnt/vendor/persist/rfs/msm/mpss
+    #chmod 0770 /mnt/vendor/persist/rfs/msm/slpi
+    #chmod 0770 /mnt/vendor/persist/rfs/mdm
+    #chmod 0770 /mnt/vendor/persist/rfs/mdm/adsp
+    #chmod 0770 /mnt/vendor/persist/rfs/mdm/mpss
+    #chmod 0770 /mnt/vendor/persist/rfs/mdm/slpi
+    #chmod 0770 /mnt/vendor/persist/rfs/mdm/tn
+    #chmod 0770 /mnt/vendor/persist/rfs/apq
+    #chmod 0770 /mnt/vendor/persist/rfs/apq/gnss
+    #chmod 0770 /mnt/vendor/persist/hlos_rfs
 
     # (Android <= 9): Remove "security.restorecon_last" xattr from /mnt/vendor/persist/
     exec u:r:vendor_toolbox:s0 root root -- /vendor/bin/toybox_vendor setfattr -x security.restorecon_last /mnt/vendor/persist/
@@ -102,15 +131,35 @@ on fs
     # And force restoring of SELinux labels
     restorecon_recursive /mnt/vendor/persist/
 
-on post-fs
-    # Wait for qseecomd to be started
-    wait_for_prop vendor.sys.listeners.registered true
-
 on late-fs
+
+    # Start services for bootanim
+    start surfaceflinger
+    start bootanim
+    # Careful! Use 2-1 for legacy
+    start vendor.hwcomposer-2-3
+    #start vendor.hwcomposer-2-1
+    start vendor.configstore-hal
+    # Careful! Don't use this for legacy
+    start vendor.qti.hardware.display.allocator
+    start vendor.light-hal-2-0
+
     # Wait for hwservicemanager ready since fsck might be triggered in mount_all --late
     # In such case, init won't responce the property_set from hwservicemanager and then
     # cause services for bootanim not running.
-    wait_for_prop hwservicemanager.ready true
+    # Not needed any more, see:
+    # https://android-review.googlesource.com/c/platform/system/libhidl/+/356043
+    #wait_for_prop hwservicemanager.ready true
+
+    # Mount RW partitions which need run fsck
+    mount_all /vendor/etc/fstab.${ro.hardware} --late
+
+on post-fs
+    # set RLIMIT_MEMLOCK to 64MB
+    setrlimit 8 67108864 67108864
+
+    # Wait for qseecomd to be started
+    wait_for_prop vendor.sys.listeners.registered true
 
 
 on post-fs-data
@@ -186,6 +235,8 @@ on post-fs-data
 
     chown system /dev/block/bootdevice/by-name
 
+    # keep that at the end of on post-fs-data
+    # Set indication (checked by vold) that we have finished this action
     setprop vold.post_fs_data_done 1
 
 on early-boot
