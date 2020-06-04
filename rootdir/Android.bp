@@ -60,6 +60,13 @@ prebuilt_etc {
 }
 
 prebuilt_etc {
+    name: "bindmountims.rc",
+    src: "vendor/etc/init/bindmountims.rc",
+    sub_dir: "init",
+    vendor: true,
+}
+
+prebuilt_etc {
     name: "ipacm.rc",
     src: "vendor/etc/init/ipacm.rc",
     sub_dir: "init",

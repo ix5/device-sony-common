@@ -1,0 +1,3 @@
+on late-fs
+    # Bind-mount ims-related modem files from vendor
+    mount none /vendor/oem /oem bind rec

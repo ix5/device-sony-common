@@ -19,6 +19,7 @@ PRODUCT_PACKAGES += \
     adpl.rc \
     adsprpcd.rc \
     audiopd.rc \
+    bindmountims.rc \
     cdsprpcd.rc \
     cnss-daemon.rc \
     ipacm.rc \
