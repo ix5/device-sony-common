@@ -58,6 +58,11 @@ PRODUCT_PACKAGES += \
     rild2.rc
 endif
 
+ifeq ($(TARGET_NEEDS_SENSORS_PDR), true)
+PRODUCT_PACKAGES += \
+    sensorspd.rc \
+endif
+
 # Common init scripts
 PRODUCT_PACKAGES += \
     init.qcom.modem.sh \
