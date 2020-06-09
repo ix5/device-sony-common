@@ -46,6 +46,8 @@ PRODUCT_USE_VNDK_OVERRIDE := true
 PRODUCT_PACKAGES += \
     vndk_package
 
+PRODUCT_ENFORCE_PACKAGES_EXIST := true
+
 # Force building a recovery image: Needed for OTA packaging to work since Q
 PRODUCT_BUILD_RECOVERY_IMAGE := true
 
@@ -137,5 +139,6 @@ $(call inherit-product, device/sony/common/common-init.mk)
 $(call inherit-product, device/sony/common/common-odm.mk)
 $(call inherit-product, device/sony/common/common-packages.mk)
 $(call inherit-product, device/sony/common/common-perm.mk)
+$(call inherit-product, device/sony/common/common-pkg-whitelist.mk)
 $(call inherit-product, device/sony/common/common-prop.mk)
 $(call inherit-product, device/sony/common/common-treble.mk)
