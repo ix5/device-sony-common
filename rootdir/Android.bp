@@ -286,6 +286,7 @@ prebuilt_etc {
     src: "vendor/etc/init/tftp_server.rc",
     sub_dir: "init",
     vendor: true,
+}
 
 prebuilt_etc {
     name: "bindmount-apps.rc",
